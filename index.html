@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Travel Budget Calculator - Discover travel destinations based on your budget!">
+    <title>Travel Budget</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: black; /* Temporary for testing */
+            color: #fff;
+            overflow: hidden; /* Hide overflow to prevent scrolling */
+        }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1; /* Set z-index to position behind content */
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 50px;
+            position: relative; /* Ensure container is above particles */
+            z-index: 2; /* Set z-index to position above particles */
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        #quote {
+            text-align: center;
+            font-style: italic;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="particles-js"></div> <!-- Particles.js canvas -->
+<div class="container">
+    <h1>Travel Budget Calculator</h1>
+    <form id="budget-form">
+        <div class="form-group">
+            <label for="budget">Enter Your Travel Budget (in USD):</label>
+            <input type="number" class="form-control" id="budget" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Get Suggestions</button>
+    </form>
+    <div id="result" class="result"></div>
+
+    <h2>Quote of the Day</h2>
+    <div id="quote"></div>
+</div>
+
+<!-- Bootstrap and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Include particles.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+<script>
+    // Initialize particles.js
+    particlesJS("particles-js", {
+        particles: {
+            number: { value: 80 },
+            size: { value: 3 },
+            move: {
+                enable: true,
+                speed: 6,
+                direction: "none",
+                random: false,
+                straight: false,
+                out_mode: "out",
+            },
+            line_linked: {
+                enable: true,
+                distance: 150,
+                color: "#ffffff",
+                opacity: 0.4,
+                width: 1,
+            },
+            shape: {
+                type: "circle",
+            },
+        },
+        interactivity: {
+            detect_on: "canvas",
+            events: {
+                onhover: { enable: true, mode: "repulse" },
+                onclick: { enable: true, mode: "push" },
+                resize: true,
+            },
+            modes: {
+                grab: { distance: 400, line_linked: { opacity: 1 } },
+                bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
+                repulse: { distance: 100, duration: 1 },
+                push: { particles_nb: 4 },
+                remove: { particles_nb: 2 },
+            },
+        },
+        retina_detect: true,
+    });
+
+    document.getElementById("budget-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const budget = parseFloat(document.getElementById("budget").value);
+        const resultDiv = document.getElementById("result");
+
+        // Suggested countries based on budget
+        let suggestion = "";
+
+        if (budget >= 5000) {
+            suggestion = `
+                <h2>Luxury Travel Suggestions:</h2>
+                <ul>
+                    <li>Switzerland - Experience luxury stays and private tours.</li>
+                    <li>Japan - Stay in high-end resorts and enjoy exclusive experiences.</li>
+                    <li>Maldives - Luxury over-water villas and premium beach resorts.</li>
+                    <li>France - Explore Paris and enjoy fine dining experiences.</li>
+                    <li>Italy - Visit Rome and enjoy guided tours in Tuscany.</li>
+                    <li>Australia - Experience the Great Barrier Reef in style.</li>
+                    <li>New Zealand - Luxury lodges and breathtaking scenery.</li>
+                    <li>United Arab Emirates - Enjoy opulent hotels and desert safaris.</li>
+                    <li>Bora Bora - Stay in stunning overwater bungalows.</li>
+                    <li>Singapore - Visit Marina Bay Sands and enjoy exclusive experiences.</li>
+                </ul>`;
+        } else if (budget >= 2000) {
+            suggestion = `
+                <h2>Better Travel Suggestions:</h2>
+                <ul>
+                    <li>Italy - Great food, culture, and mid-range accommodations.</li>
+                    <li>Thailand - Enjoy affordable but upscale beaches and resorts.</li>
+                    <li>Australia - Experience comfortable travel with great sightseeing.</li>
+                    <li>Spain - Enjoy vibrant culture and beautiful architecture.</li>
+                    <li>Greece - Visit historic sites and beautiful islands.</li>
+                    <li>Portugal - Explore Lisbon and stunning coastal areas.</li>
+                    <li>Czech Republic - Experience Prague’s rich history and culture.</li>
+                    <li>Mexico - Discover ancient ruins and enjoy delicious cuisine.</li>
+                    <li>South Africa - Go on safari and explore vibrant cities.</li>
+                    <li>Vietnam - Experience incredible food and rich culture.</li>
+                </ul>`;
+        } else if (budget >= 500) {
+            suggestion = `
+                <h2>Good Travel Suggestions:</h2>
+                <ul>
+                    <li>Mexico - Affordable beach resorts and rich culture.</li>
+                    <li>Vietnam - Budget-friendly travel with great food and culture.</li>
+                    <li>Portugal - Affordable but beautiful European destination.</li>
+                    <li>India - Experience rich culture and history at a low cost.</li>
+                    <li>Indonesia - Affordable islands with great nature.</li>
+                    <li>Colombia - Explore vibrant cities and stunning landscapes.</li>
+                    <li>Peru - Visit Machu Picchu on a budget.</li>
+                    <li>Morocco - Experience unique culture and landscapes.</li>
+                    <li>Philippines - Affordable islands with beautiful beaches.</li>
+                    <li>Thailand - Enjoy street food and beautiful beaches.</li>
+                </ul>`;
+        } else {
+            suggestion = `<h2>Consider increasing your budget for international travel.</h2>`;
+        }
+
+        resultDiv.innerHTML = suggestion;
+
+        // Display random quote
+        const randomQuote = quote [Math.floor(Math.random() * quotes.length)];
+        document.getElementById("quote").innerHTML = randomQuote;
+    });
+
+    const quotes = [
+        "Here’s the modified code for your Travel Budget Calculator with the new Particles.js link and a temporary solid black background to help troubleshoot the issue:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Travel Budget Calculator - Discover travel destinations based on your budget!">
+    <title>Travel Budget</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: black; /* Temporary for testing */
+            color: #fff;
+            overflow: hidden; /* Hide overflow to prevent scrolling */
+        }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1; /* Set z-index to position behind content */
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 50px;
+            position: relative; /* Ensure container is above particles */
+            z-index: 2; /* Set z-index to position above particles */
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        #quote {
+            text-align: center;
+            font-style: italic;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="particles-js"></div> <!-- Particles.js canvas -->
+<div class="container">
+    <h1>Travel Budget Calculator</h1>
+    <form id="budget-form">
+        <div class="form-group">
+            <label for="budget">Enter Your Travel Budget (in USD):</label>
+            <input type="number" class="form-control" id="budget" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Get Suggestions</button>
+    </form>
+    <div id="result" class="result"></div>
+
+    <h2>Quote of the Day</h2>
+    <div id="quote"></div>
+</div>
+
+<!-- Bootstrap and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Include particles.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+<script>
+    // Initialize particles.js
+    particlesJS("particles-js", {
+        particles: {
+            number: { value: 80 },
+            size: { value: 3 },
+            move: {
+                enable: true,
+                speed: 6,
+                direction: "none",
+                random: false,
+                straight: false,
+                out_mode: "out",
+            },
+            line_linked: {
+                enable: true,
+                distance: 150,
+                color: "#ffffff",
+                opacity: 0.4,
+                width: 1,
+            },
+            shape: {
+                type: "circle",
+            },
+        },
+        interactivity: {
+            detect_on: "canvas",
+            events: {
+                onhover: { enable: true, mode: "repulse" },
+                onclick: { enable: true, mode: "push" },
+                resize: true,
+            },
+            modes: {
+                grab: { distance: 400, line_linked: { opacity: 1 } },
+                bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
+                repulse: { distance: 100, duration: 1 },
+                push: { particles_nb: 4 },
+                remove: { particles_nb: 2 },
+            },
+        },
+        retina_detect: true,
+    });
+
+    document.getElementById("budget-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const budget = parseFloat(document.getElementById("budget").value);
+        const resultDiv = document.getElementById("result");
+
+        // Suggested countries based on budget
+        let suggestion = "";
+
+        if (budget >= 5000) {
+            suggestion = `
+                <h2>Luxury Travel Suggestions:</h2>
+                <ul>
+                    <li>Switzerland - Experience luxury stays and private tours.</li>
+                    <li>Japan - Stay in high-end resorts and enjoy exclusive experiences.</li>
+                    <li>Maldives - Luxury over-water villas and premium beach resorts.</li>
+                    <li>France - Explore Paris and enjoy fine dining experiences.</li>
+                    <li>Italy - Visit Rome and enjoy guided tours in Tuscany.</li>
+                    <li>Australia - Experience the Great Barrier Reef in style.</li>
+                    <li>New Zealand - Luxury lodges and breathtaking scenery.</li>
+                    <li>United Arab Emirates - Enjoy opulent hotels and desert safaris.</li>
+                    <li>Bora Bora - Stay in stunning overwater bungalows.</li>
+                    <li>Singapore - Visit Marina Bay Sands and enjoy exclusive experiences.</li>
+                </ul>`;
+        } else if (budget >= 2000) {
+            suggestion = `
+                <h2>Better Travel Suggestions:</h2>
+                <ul>
+                    <li>Italy - Great food, culture, and mid-range accommodations.</li>
+                    <li>Thailand - Enjoy affordable but upscale beaches and resorts.</li>
+                    <li>Australia - Experience comfortable travel with great sightseeing.</li>
+                    <li>Spain - Enjoy vibrant culture and beautiful architecture.</li>
+                    <li>Greece - Visit historic sites and beautiful islands.</li>
+                    <li>Portugal - Explore Lisbon and stunning coastal areas.</li>
+                    <li>Czech Republic - Experience Prague’s rich history and culture.</li>
+                    <li>Mexico - Discover ancient ruins and enjoy delicious cuisine.</li>
+                    <li>South Africa - Go on safari and explore vibrant cities.</li>
+                    <li>Vietnam - Experience incredible food and rich culture.</li>
+                </ul>`;
+        } else if (budget >= 500) {
+            suggestion = `
+                <h2>Good Travel Suggestions:</h2>
+                <ul>
+                    <li>Mexico - Affordable beach resorts and rich culture.</li>
+                    <li>Vietnam - Budget-friendly travel with great food and culture.</li>
+                    <li>Portugal - Affordable but beautiful European destination.</li>
+                    <li>India - Experience rich culture and history at a low cost.</li>
+                    <li>Indonesia - Affordable islands with great nature.</li>
+                    <li>Colombia - Explore vibrant cities and stunning landscapes.</li>
+                    <li>Peru - Visit Machu Picchu on a budget.</li>
+                    <li>Morocco - Experience unique culture and landscapes.</li>
+                    <li>Philippines - Affordable islands with beautiful beaches.</li>
+                    <li>Thailand - Enjoy street food and beautiful beaches.</li>
+                </ul>`;
+        } else {
+            suggestion = `<h2>Consider increasing your budget for international travel.</h2>`;
+        }
+
+        resultDiv.innerHTML = suggestion;
+
+        // Display random quote
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById("quote").innerHTML = randomQuote;
+    });
+
+    const quotes = [
+        "Business: 'The only way to do great work is to love what you do.' - Steve Jobs",
+        "Motivation: 'Success is not final, failure is not fatal: It is the courage to continue that counts.' - Winston Churchill",
+        "Depression: 'The greatest glory in living lies not in never falling, but in rising every time we fall.' - Nelson Mandela",
+        "Sadness: 'Tears are words that need to be written.' - Paulo Coelho",
+        "Happiness: 'For every minute you are angry, you lose sixty seconds of happiness.' - Ralph Waldo Emerson",
+        "Motivation: 'Believe you can and you're halfway there.' - Theodore Roosevelt",
+        "Business: 'Opportunities don't happen. You create them.' - Chris Grosser",
+        "Happiness: 'Happiness is not something ready made. It comes from your own actions.' - Dalai Lama",
+        "Sadness: 'Every man has his secret sorrows which the world knows not.' - Henry Wadsworth Longfellow",
+        "Depression: 'It's okay to not be okay.' - Unknown",
+        "Motivation: 'The future belongs to those who believe in the beauty of their dreams.' - Eleanor Roosevelt",
+        "Business: 'Do not wait to strike till the iron is hot, but make it hot by striking.' - William Butler Yeats"
+    ];
+</script>
+</body>
+</html>
