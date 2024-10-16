@@ -1,0 +1,50 @@
+body {
+  font-family: Arial, sans-serif;
+  background-image: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fHN1bnNoaW5lfGVufDB8fHx8MTYzMjAyNzI0OA&ixlib=rb-1.2.1&q=80&w=1080'); /* Replace with your wallpaper URL */
+  background-size: cover;
+  color: white;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 100px auto; /* Adjust to move down the main content */
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+.result {
+  margin: 20px 0;
+}
